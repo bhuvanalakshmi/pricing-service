@@ -24,6 +24,7 @@ public class CustomerMgmt {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerMgmt.class);
 
 	CountryMgmt countryMgmt = new CountryMgmt();
+	ServicePlanPriceMgmt servicePlanMgmt = new ServicePlanPriceMgmt();
 
 	//name, email, plan_type, price, country_id, signup_date, next_billing_date, id 
 	public Customer getCustomerByEmail( String email) throws SQLException {
@@ -100,16 +101,21 @@ public class CustomerMgmt {
 		Customer c = null;
 		try{
 			con = Utils.getConnection();
+			
+			int countryId = customer.getInteger("country_id");
+			ServicePlanType planType = ServicePlanType.fromValue(customer.getString("planType"));
+			float price = servicePlanMgmt.getServicePlanInfo(countryId, planType).getPrice();
+			
 			//name, email, plan_type, price, country_id, signup_date, next_billing_date, id 
 			statement = con.prepareStatement(Queries.CREATE_CUSTOMER);
 			statement.setString(1, customer.getString("name"));
 			statement.setString(2, customer.getString("email"));
-			statement.setString(3, customer.getString("planType"));
-			statement.setFloat(4, customer.getFloat("price"));
-			statement.setInt(5, customer.getInteger("country_id"));
+			statement.setString(3, planType.name());
+			statement.setFloat(4, price);
+			statement.setInt(5, countryId);
 			statement.setBigDecimal(6, new BigDecimal(customer.getLong("signUpTimestamp")));
 			//Add 30 days
-			statement.setBigDecimal(7, new BigDecimal(customer.getLong("signUpTimestamp")+ (30 * 24 * 60 * 60)));
+			statement.setBigDecimal(7, getNextBillingDate(customer));
 
 			statement.executeUpdate();
 
@@ -131,16 +137,21 @@ public class CustomerMgmt {
 		Customer c = null;
 		try{
 			con = Utils.getConnection();
+			
+			int countryId = customer.getInteger("country_id");
+			ServicePlanType planType = ServicePlanType.fromValue(customer.getString("planType"));
+			float price = servicePlanMgmt.getServicePlanInfo(countryId, planType).getPrice();
+			
 			statement = con.prepareStatement(Queries.UPDATE_CUSTOMER);
 			statement.setString(1, customer.getString("name"));
 			statement.setString(2, customer.getString("email"));
-			statement.setString(3, customer.getString("planType"));
-			statement.setFloat(4, customer.getFloat("price"));
-			statement.setInt(5, customer.getInteger("country_id"));
+			statement.setString(3, planType.name());
+			statement.setFloat(4, price);
+			statement.setInt(5, countryId);
 			statement.setBigDecimal(6, new BigDecimal(customer.getLong("signUpTimestamp")));
-			statement.setBigDecimal(7, new BigDecimal(customer.getLong("signUpTimestamp")+ (30 * 24 * 60 * 60)));
+			statement.setBigDecimal(7, getNextBillingDate(customer));
 			statement.setInt(8, customerId);
-			System.out.println(statement);
+			LOGGER.debug("Statement - "+statement);
 			statement.executeUpdate();
 
 			c = getCustomer(customerId);
@@ -152,6 +163,11 @@ public class CustomerMgmt {
 			Utils.close(con, statement);
 		}
 		return c;
+	}
+
+	private BigDecimal getNextBillingDate(JsonObject customer) {
+		//Add 30 days to sign up
+		return new BigDecimal(customer.getLong("signUpTimestamp")+ (30 * 24 * 60 * 60));
 	}
 
 	public Customer deleteCustomer( int customerId) throws SQLException {
@@ -210,20 +226,55 @@ public class CustomerMgmt {
 		return customers;
 
 	}
-
-
-	public List<Customer> getCustomersForPriceUpdate(int countryId, ServicePlanType planType,  float price, boolean filterByTimestamp ) throws SQLException {
-		List<Customer> customers =new ArrayList<Customer>();
+	
+	public int getCustomersCountForPriceUpdate(int countryId, ServicePlanType planType,  float price, boolean filterByTimestamp)throws SQLException {
+		int count = 0;
 		Connection con = null;
 		PreparedStatement statement = null;
-		Customer c = null;
 		try{
 			con = Utils.getConnection();
-			String sql = Queries.GET_CUSTOMERS_BY_COUNTRY_PLAN_PRICE;
+			String sql = Queries.GET_COUNT_OF_CUSTOMERS_BY_COUNTRY_PLAN_PRICE;
 			if(filterByTimestamp)
 				sql = sql + " AND next_billing_timestamp <= " + new Timestamp(System.currentTimeMillis()/1000).getTime() ; 
 			
 			statement = con.prepareStatement(sql);
+			statement.setInt(1, countryId);
+			statement.setString(2, planType.name());
+			statement.setFloat(3, price);
+			LOGGER.debug("statement "+statement);
+			ResultSet rs = statement.executeQuery();
+			if(rs == null) return count;
+			while (rs.next()) {
+				count = rs.getInt("noofcustomers");
+			}
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			Utils.close(con, statement);
+		}
+		return count;
+	}
+
+
+	public List<Customer> getCustomersForPriceUpdate(int countryId, ServicePlanType planType,  float price, boolean filterByTimestamp, Integer offset, Integer numOfRecords) throws SQLException {
+		List<Customer> customers =new ArrayList<Customer>();
+		Connection con = null;
+		PreparedStatement statement = null;
+		Customer c = null;
+		StringBuilder sql = new StringBuilder();
+		try{
+			con = Utils.getConnection();
+			sql.append(Queries.GET_CUSTOMERS_BY_COUNTRY_PLAN_PRICE);
+			if(filterByTimestamp)
+				sql.append(" AND next_billing_timestamp <= ").append( new Timestamp(System.currentTimeMillis()/1000).getTime()) ; 
+			
+			if(offset != null && numOfRecords != null)
+				sql.append(" LIMIT ").append(offset.intValue()).append(", ").append(numOfRecords);
+			
+			statement = con.prepareStatement(sql.toString());
 			statement.setInt(1, countryId);
 			statement.setString(2, planType.name());
 			statement.setFloat(3, price);

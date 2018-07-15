@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bk.model.Customer;
-import com.bk.verticle.CustomerPriceUpdater;
+import com.bk.verticle.PriceUpdater;
 
 @Rule(name = "new_customer_rule", description = "If customer sign up date is less than six 6 months, price will not be increased" )
 public class NewCustomerRule {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerPriceUpdater.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(NewCustomerRule.class);
 
 	@Condition
 	public boolean isNotNewCustomer(@Fact("customer") Customer customer) {

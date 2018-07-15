@@ -8,11 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bk.model.Customer;
-import com.bk.verticle.CustomerPriceUpdater;
 
 @Rule(name = "loyal_US_customer", description = "If customer is from US and his sign up date is more than 5 years, price will be 2 dollars less than new price or current price whichever is greater" )
 public class LoyalUSCustomerRule {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerPriceUpdater.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoyalUSCustomerRule.class);
 
 	@Condition
 	public boolean isLoyalUSCustomer(@Fact("customer") Customer customer) {

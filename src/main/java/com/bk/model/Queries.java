@@ -11,6 +11,9 @@ public interface Queries {
 	
 	String GET_CUSTOMERS = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer";
 	String GET_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where country_id = ? AND plan_type = ?  AND price <> ?";
+	
+	String GET_COUNT_OF_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select count(*) as noofcustomers from customer where country_id = ? AND plan_type = ?  AND price <> ?";
+
 
 	String GET_CUSTOMER = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where id = ?";
 	String GET_CUSTOMER_BY_EMAIL = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where email = ?";

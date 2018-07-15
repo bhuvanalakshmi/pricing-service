@@ -17,12 +17,9 @@ import com.bk.service.dao.ServicePlanPriceMgmt;
 import com.bk.util.Utils;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
@@ -34,26 +31,9 @@ public class PricingService extends AbstractVerticle {
 	CustomerMgmt customerMgmt;
 	ServicePlanPriceMgmt servicePlanPriceMgmt;
 
-	public static void main(String[] args) {
-
-		ClusterManager clusterManager = Utils.getIgniteClusterManagerConfig();
-		Vertx.clusteredVertx(new VertxOptions().setClustered(true).setClusterManager(clusterManager), ar -> {
-			if (ar.failed()) {
-				LOGGER.error("Cannot create vert.x instance : " + ar.cause());
-			} else {
-				Vertx vertx = ar.result();
-				vertx.deployVerticle(PricingService.class.getName());
-				LOGGER.debug("Deployed Pricing service verticle  ");
-			}
-		});
-	}
-
-	
-
-
 	@Override
 	public void start() {
-
+		int port =Integer.parseInt(Utils.getProperties().getProperty("app.port"));
 		countryMgmt = new CountryMgmt();
 		customerMgmt = new CustomerMgmt();
 		servicePlanPriceMgmt = new ServicePlanPriceMgmt();
@@ -73,7 +53,7 @@ public class PricingService extends AbstractVerticle {
 
 
 
-		vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+		vertx.createHttpServer().requestHandler(router::accept).listen(port);
 	}
 
 	private void addServicePlanAPIs(Router router) {
@@ -279,7 +259,6 @@ public class PricingService extends AbstractVerticle {
 
 	private void sendResponse(HttpServerResponse response, List objs) {
 		response.putHeader("content-type", "application/json").end(new JsonArray(objs).encodePrettily());
-
 	}
 
 	private void sendResponse(Integer id, HttpServerResponse response, Object obj, ObjectType type) {

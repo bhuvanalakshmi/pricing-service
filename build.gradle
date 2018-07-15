@@ -22,7 +22,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'com.bk'
 version = '1.0'
-mainClassName = "io.vertx.core.Launcher"
+mainClassName = "com.bk.verticle.MainVerticle"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
