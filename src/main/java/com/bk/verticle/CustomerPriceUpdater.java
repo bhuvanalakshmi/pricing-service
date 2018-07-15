@@ -69,13 +69,14 @@ public class CustomerPriceUpdater extends AbstractVerticle{
 
 		for(Customer c : customers){
 			float oldPrice = c.getPrice();
-			Facts facts = new Facts();
-			facts.put("customer", c);
-			facts.put("price", plan.getPrice());
 
 			// fire rules on known facts
-			if(plan.getRules() != null)
+			if(plan.getRules() != null){
+				Facts facts = new Facts();
+				facts.put("customer", c);
+				facts.put("price", plan.getPrice());
 				rulesEngine.fire(rules, facts);
+			}
 			else
 				c.setPrice(plan.getPrice());
 

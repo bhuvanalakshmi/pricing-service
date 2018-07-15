@@ -30,7 +30,7 @@ public class PriceUpdater extends AbstractVerticle{
 	public void start() throws Exception {
 
 		int delayTimeInSecs = Integer.parseInt(Utils.getProperties().getProperty("priceupdater.job.time", "30"));
-		int customersChunkSize = Integer.parseInt(Utils.getProperties().getProperty("customers.chunk.size"));
+		int customersChunkSize = Integer.parseInt(Utils.getProperties().getProperty("updater.workload.size"));
 
 		vertx.setPeriodic(delayTimeInSecs*1000, x -> {
 			ServicePlanType planType = ServicePlanType.fromValue(config().getString("planType"));

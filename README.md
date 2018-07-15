@@ -31,6 +31,6 @@ you can access the apis by going to http://localhost:8080. If you like to change
  java -jar build/libs/pricing-service-1.0-all.jar price-updater
  ```
  If you want to change how frequently you want this verticle to be executed, then you can update the **priceupdater.job.time** in config.properties. 
-You can also update **customers.chunk.size** in config.properties to increase/decrease the number of customers to be processed in a worked thread.  
+You can also update **updater.workload.size** in config.properties to increase/decrease the number of customers to be processed in a worked thread.  
 
 Refer the design document(/design-doc/Pricing-service.docx) for more details on these services and APIs. 

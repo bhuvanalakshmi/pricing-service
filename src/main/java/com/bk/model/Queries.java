@@ -9,10 +9,10 @@ public interface Queries {
 	String UPDATE_COUNTRY = "update country set name = ?, code = ?, currency = ? where id = ?";
 	String DELETE_COUNTRY = "delete from country where id = ?";
 	
-	String GET_CUSTOMERS = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer";
-	String GET_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where country_id = ? AND plan_type = ?  AND price <> ?";
+	String GET_CUSTOMERS = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer order by id";
+	String GET_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where country_id = ? AND plan_type = ?  AND price <> ? order by id";
 	
-	String GET_COUNT_OF_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select count(*) as noofcustomers from customer where country_id = ? AND plan_type = ?  AND price <> ?";
+	String GET_COUNT_OF_CUSTOMERS_BY_COUNTRY_PLAN_PRICE = "select count(*) as noofcustomers from customer where country_id = ? AND plan_type = ?  AND price <> ? order by id";
 
 
 	String GET_CUSTOMER = "select name, email, plan_type, price, country_id, signup_timestamp, next_billing_timestamp, id from customer where id = ?";
