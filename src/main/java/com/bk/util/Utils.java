@@ -25,6 +25,7 @@ import io.vertx.spi.cluster.ignite.IgniteClusterManager;
 public class Utils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+	
 
 	public static void registerRules(Rules rules, String ruleNames){
 		if(ruleNames == null) return;

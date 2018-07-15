@@ -18,6 +18,8 @@ import io.vertx.core.spi.cluster.ClusterManager;
 public class MainVerticle extends AbstractVerticle{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
+	
+	public static String verticleName = null;
 
 	public static void main(String[] args) {
 
@@ -26,9 +28,11 @@ public class MainVerticle extends AbstractVerticle{
 		}
 
 		LOGGER.debug("arguments -- "+Arrays.asList(args));
-		String verticleName = args[0];
+		verticleName = args[0];
 		if(!isValidVerticleName( verticleName))
 			throw new IllegalArgumentException("Invalid verticle name "+ verticleName);
+		
+		
 
 		ClusterManager clusterManager = Utils.getIgniteClusterManagerConfig();
 		Vertx.clusteredVertx(new VertxOptions().setClustered(true).setClusterManager(clusterManager), ar -> {

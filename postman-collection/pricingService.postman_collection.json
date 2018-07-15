@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "2e3c9bf9-7e7d-4373-80ed-6b4b1d23037b",
+		"name": "pricingService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateCountry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Russia\",\n    \"code\": \"RUS\",\n    \"currency\": \"Ruble\"\n}"
+				},
+				"url": {
+					"raw": "http://54.164.213.77:8080/countries",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"countries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Countries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/countries",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"countries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Country by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/countries/1",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"countries",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Country",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"France\",\n    \"code\": \"FRA\",\n    \"currency\": \"Euro\"\n}"
+				},
+				"url": {
+					"raw": "http://54.164.213.77:8080/countries/6",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"countries",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Customer",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"bhuvana\",\n\t\"email\":\"test@gmail.com\",\n\t\"planType\":\"basic\",\n\t\"price\":1.99,\n\t\"country_id\":1,\n\t\"signUpTimestamp\": 1527817373\n}"
+				},
+				"url": {
+					"raw": "http://54.164.213.77:8080/customers/3",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"moreyyythan6mnths\",\n\t\"email\":\"moreyyythan6mnths@gmail.com\",\n\t\"planType\":\"premium\",\n\t\"price\":1.99,\n\t\"country_id\":3,\n\t\"signUpTimestamp\": 1507953846\n}"
+				},
+				"url": {
+					"raw": "http://54.164.213.77:8080/customers",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/customers",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET customer by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/customers/1",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOrUpdateServicePlan",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country_id\" : 3, \n\t\"planType\": \"premium\",\n\t\"price\": 8.99, \n\t\"rules\":\"loyal_US_customer\"\n}"
+				},
+				"url": {
+					"raw": "http://54.164.213.77:8080/servicePlans",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"servicePlans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET service plans",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/servicePlans",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"servicePlans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get service plan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://54.164.213.77:8080/servicePlans/basic/country/1",
+					"protocol": "http",
+					"host": [
+						"54",
+						"164",
+						"213",
+						"77"
+					],
+					"port": "8080",
+					"path": [
+						"servicePlans",
+						"basic",
+						"country",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
